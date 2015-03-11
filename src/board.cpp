@@ -1,16 +1,16 @@
 #include "board.h"
 #include "coordinates.h"
 #include <vector>
-#include <stdexcept>
+// #include <stdexcept>
 
 using std::vector;
-using std::out_of_range;
+// using std::out_of_range;
 
 
 template <class T>
 void Board<T>::set_dim(size_t value) {
     _dim = value;
-    _cells.resize(_dim, vector< T >(_dim));
+    _cells.resize(_dim, in_container(_dim));
 }
 
 template <class T>
@@ -40,7 +40,7 @@ typename Board<T>::iterator Board<T>::begin() {
 
 template <class T>
 typename Board<T>::iterator Board<T>::end() {
-    return iterator(this, coord(_dim, _dim - 1));
+    return iterator(this, coord(0, _dim));
 }
 
 template <class T>
@@ -56,10 +56,17 @@ typename Board<T>::iterator& Board<T>::iterator::operator++() {
     else {
         _coords.x++;
     }
-    if (_coords.y >= _board->get_dim()) {
-        throw out_of_range("Incrementing iterator out of range");
-    }
+    // if (_coords.y > _board->get_dim()) {
+    //     throw out_of_range("Incrementing iterator out of range");
+    // }
     return *this;
+}
+
+template <class T>
+typename Board<T>::iterator Board<T>::iterator::operator++(int) {
+    Board<T>::iterator tmp(*this);
+    operator++();
+    return tmp;
 }
 
 template <class T>
@@ -71,10 +78,17 @@ typename Board<T>::iterator& Board<T>::iterator::operator--() {
     else {
         _coords.x--;
     }
-    if (_coords.y < 0) {
-        throw out_of_range("Decrementing iterator out of range");
-    }
+    // if (_coords.y < -1) {
+    //     throw out_of_range("Decrementing iterator out of range");
+    // }
     return *this;
+}
+
+template <class T>
+typename Board<T>::iterator Board<T>::iterator::operator--(int) {
+    Board<T>::iterator tmp(*this);
+    operator--();
+    return tmp;
 }
 
 template <class T>
@@ -83,11 +97,11 @@ T& Board<T>::iterator::operator*() {
 }
 
 template <class T>
-bool Board<T>::iterator::operator==(const iterator& other) {
+bool Board<T>::iterator::operator==(const iterator& other) const {
     return (other._board == _board && other._coords == _coords);
 }
 
 template <class T>
-bool Board<T>::iterator::operator!=(const iterator& other) {
-    return (other._board != _board || other._coords != _coords);
+bool Board<T>::iterator::operator!=(const iterator& other) const {
+    return !(other == *this);
 }

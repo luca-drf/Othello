@@ -9,7 +9,7 @@ using std::vector;
 
 template <class T>
 class Board {
-    public:        
+    public: 
     void set_dim(size_t value);
     size_t get_dim();
     size_t size();
@@ -17,13 +17,16 @@ class Board {
     void place_element(T element, coord coords);
 
     class iterator {
-        public: 
+        public:
         iterator(Board* board, coord coords);
         iterator& operator++();
         iterator& operator--();
+        iterator operator++(int);
+        iterator operator--(int);
+
         T& operator*();
-        bool operator==(const iterator& other);
-        bool operator!=(const iterator& other);
+        bool operator==(const iterator& other) const;
+        bool operator!=(const iterator& other) const;
 
         protected:
         Board* _board;
@@ -35,7 +38,10 @@ class Board {
 
 
     protected:
-    vector< vector< T > > _cells;
+    typedef vector< vector< T > > out_container;
+    typedef vector< T > in_container;
+
+    out_container _cells;
     size_t _dim;
 };
 

@@ -15,6 +15,14 @@ Color Disk::get_color() {
     return _color;
 }
 
+bool Disk::operator==(const Disk& other) const {
+    return _color == other._color;
+}
+
+bool Disk::operator!=(const Disk& other) const {
+    return _color != other._color;
+}
+
 void Disk::set_color(Color color) {
     _color = color;
 }

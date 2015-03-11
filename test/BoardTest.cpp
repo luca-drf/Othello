@@ -4,6 +4,9 @@
 #include "disk.h"
 #include "color.h"
 #include "coordinates.h"
+#include <vector>
+
+using std::vector;
 
 
 class BoardTest : public ::testing::Test
@@ -26,6 +29,8 @@ protected:
     virtual void SetUp() {
         // Code here will be called immediately after the constructor (right
         // before each test).
+        board.set_dim(8);
+        
 
     }
 
@@ -40,13 +45,38 @@ protected:
 };
 
 
-TEST_F(BoardTest, UnitTest) 
+TEST_F(BoardTest, test_set_dim) 
 {
-    board.set_dim(8);
-    coord coords = coord(3, 4);
+    coord coords(3, 4);
     Color expected = Color::NONE;
-    auto result = board.at(coords);
-    ASSERT_EQ( expected, result.get_color() );
+    auto actual = board.at(coords);
+    ASSERT_EQ( expected, actual.get_color() );
 }
 
+TEST_F(BoardTest, test_place_element) 
+{
+    coord coords(2, 2);
+    board.place_element(Disk(Color::LIGHT), coords);
+    auto actual = board.at(coords);
+    Color expected = Color::LIGHT;    
+    ASSERT_EQ( expected, actual.get_color() );
+}
 
+TEST_F(BoardTest, test_size) 
+{
+    ASSERT_EQ( 64, board.size() );
+}
+
+TEST_F(BoardTest, test_iterator) 
+{
+    coord coords(0, 1);
+    board.place_element(Disk(Color::LIGHT), coords);
+    vector< Disk > expected(63, Disk(Color::NONE));
+    expected.insert(expected.begin() + 8, Disk(Color::LIGHT));
+    vector< Disk > actual;
+    for (auto d : board) {
+        actual.push_back(d);
+    }
+    ASSERT_EQ( expected, actual );
+}
+ 

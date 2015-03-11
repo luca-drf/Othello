@@ -2,6 +2,10 @@
 #include "disk.h"
 #include "color.h"
 #include "coordinates.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 
 void Game::board_set_up() {
@@ -13,7 +17,23 @@ void Game::board_set_up() {
 }
 
 
-void print() {
-    
+void Game::print() {
+    auto dim = board.get_dim();
+    for (unsigned int i = 0; i <= dim; i++) {
+        cout << "-----";
+    }
+    for (auto dit = board.begin(), col = 0; dit != board.end(); dit++, col++) {
+        if (col % dim == 0) {
+            cout << "|" << endl;
+            for (unsigned int i = 0; i <= dim; i++) {
+                cout << "-----";
+            }
+            cout << endl;
+        }
+        cout << "| " << (*dit).get_color() << " ";
+    }
 }
 
+
+// -----
+// | 1 |

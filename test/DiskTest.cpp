@@ -55,3 +55,15 @@ TEST_F(DiskTest, Test_flip)
     ASSERT_EQ( Color::LIGHT, disk.get_color() );
 }
 
+TEST_F(DiskTest, Test_eq) 
+{
+    Disk other(Color::LIGHT);
+    disk.set_color(Color::LIGHT);
+    ASSERT_EQ( disk, other );
+}
+
+/* TEST_F(DiskTest, Test_neq) 
+ * {
+ *     Disk other(Color::LIGHT);
+ *     ASSERT_EQ( disk, other );
+ * } */
