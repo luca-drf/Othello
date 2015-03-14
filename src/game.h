@@ -8,8 +8,12 @@
 #include "disk.h"
 #include "coordinates.h"
 #include <list>
+#include <vector>
+#include <string>
 
 using std::list;
+using std::vector;
+using std::string;
 
 
 class Game {
@@ -27,6 +31,8 @@ class Game {
 
     protected:
     list< coord > _available;
+    void _print_hline(size_t dim);
+    void _print_board(vector<string> x_label, vector<string> y_label);    
         
 };
 

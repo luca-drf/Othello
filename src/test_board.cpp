@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <string>
 #include "board.h"
 #include "coordinates.h"
 #include "disk.h"
@@ -13,15 +15,20 @@ void print_hline(size_t dim) {
     cout << endl;
 }
 
-void print(Board<Disk> board) {
-    int col = 0;
+void print(Board<Disk> board, vector<string> x_label, vector<string> y_label) {
+    short col = 0, row = 0;
     bool first_line = true;
     auto dim = board.get_dim();
+
+    for (short i = 0; i < dim; i++) {
+        cout << "  " << x_label.at(i) << " ";
+    }
     
     for (auto dit = board.begin(); dit != board.end(); dit++, col++) {
         if (col % dim == 0) {
             if (!first_line) {
-                cout << "|";
+                cout << "| " << y_label.at(row);
+                row++;
             }
             else {
                 first_line = false;
@@ -31,7 +38,7 @@ void print(Board<Disk> board) {
         }
         cout << "| " << (*dit).get_color() << " ";
     }
-    cout << "|" << endl;
+    cout << "| " << y_label.at(row) << endl;
     print_hline(dim);
 }
 
@@ -43,7 +50,10 @@ int main() {
 
     coord coords(0, 1);
     board.place_element(Disk(Color::LIGHT), coords);
-    print(board);
+    vector<string> x_label = {"a", "b", "c"};
+    vector<string> y_label = {"1", "2", "3"};
+    
+    print(board, x_label, y_label);
 
     
     

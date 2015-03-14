@@ -3,9 +3,13 @@
 #include "color.h"
 #include "coordinates.h"
 #include <iostream>
+#include <vector>
+#include <string>
 
 using std::cout;
 using std::endl;
+using std::vector;
+using std::string;
 
 
 void Game::board_set_up() {
@@ -18,22 +22,42 @@ void Game::board_set_up() {
 
 
 void Game::print() {
-    auto dim = board.get_dim();
-    for (unsigned int i = 0; i <= dim; i++) {
-        cout << "-----";
+    vector<string> x_label = {"a", "b", "c", "d", "e", "f", "g", "h"};
+    vector<string> y_label = {"1", "2", "3", "4", "5", "6", "7", "8"};
+
+    _print_board(x_label, y_label);
+}
+
+void Game::_print_hline(size_t dim) {
+    for (unsigned int i = 0; i < dim; i++) {
+        cout << " ---";
     }
-    for (auto dit = board.begin(), col = 0; dit != board.end(); dit++, col++) {
+    cout << endl;
+}
+
+void Game::_print_board(vector<string> x_label, vector<string> y_label) {
+    short col = 0, row = 0;
+    bool first_line = true;
+    auto dim = board.get_dim();
+
+    for (short i = 0; i < dim; i++) {
+        cout << "  " << x_label.at(i) << " ";
+    }
+    
+    for (auto dit = board.begin(); dit != board.end(); dit++, col++) {
         if (col % dim == 0) {
-            cout << "|" << endl;
-            for (unsigned int i = 0; i <= dim; i++) {
-                cout << "-----";
+            if (!first_line) {
+                cout << "| " << y_label.at(row);
+                row++;
+            }
+            else {
+                first_line = false;
             }
             cout << endl;
+            _print_hline(dim);
         }
         cout << "| " << (*dit).get_color() << " ";
     }
+    cout << "| " << y_label.at(row) << endl;
+    _print_hline(dim);
 }
-
-
-// -----
-// | 1 |
