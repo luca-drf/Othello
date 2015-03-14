@@ -5,11 +5,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+using std::invalid_argument;
 
 
 void Game::board_set_up() {
@@ -61,3 +63,16 @@ void Game::_print_board(vector<string> x_label, vector<string> y_label) {
     cout << "| " << y_label.at(row) << endl;
     _print_hline(dim);
 }
+
+void Game::register_player(Player* player, Color color) {
+    if (color == Color::LIGHT) {
+        player_l = player;
+    }
+    else if (color == Color::DARK) {
+        player_d = player;        
+    }
+    else {
+        throw invalid_argument("Invalid color");
+    }
+}
+
