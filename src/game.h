@@ -19,12 +19,16 @@ using std::string;
 class Game {
     public:
     Board<Disk> board;
-    Scoreboard score;
+    Scoreboard scoreboard;
     Player* player_d;
     Player* player_l;
     
-    void board_set_up();
+    void set_up();
+    void _board_set_up();
     void play();
+    void move(Player* player);
+    void _update_score(int d_flipped, Color color);
+    int _update_board(coord coords, Color color);
     bool game_over();
     void register_player(Player* player, Color color);
     void print();

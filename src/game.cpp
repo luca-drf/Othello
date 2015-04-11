@@ -14,7 +14,13 @@ using std::string;
 using std::invalid_argument;
 
 
-void Game::board_set_up() {
+void Game::set_up() {
+    _board_set_up();
+    scoreboard.update_p1(2);
+    scoreboard.update_p2(2);
+}
+
+void Game::_board_set_up() {
     board.set_dim(8);
     board.place_element(Disk(Color::LIGHT), coord(3, 3));
     board.place_element(Disk(Color::LIGHT), coord(4, 4));
@@ -22,6 +28,52 @@ void Game::board_set_up() {
     board.place_element(Disk(Color::DARK), coord(3, 4));
 }
 
+void Game::register_player(Player* player, Color color) {
+    switch(color) {
+        case Color::LIGHT:
+            player_l = player;
+            player->set_color(Color::LIGHT);
+            player->set_game(this);
+        case Color::DARK:
+            player_d = player;
+            player->set_color(Color::DARK);
+            player->set_game(this);            
+        case Color::NONE:
+            throw invalid_argument("Invalid color");
+    }
+}
+
+void Game::play() {
+    while(!game_over()) {
+        move(player_l);
+        print();
+        move(player_d);
+        print();
+    }
+    cout << "Game Over." << endl;
+}
+
+void Game::move(Player* player) {
+    coord coords = player->move();
+    Color p_color = player->get_color();
+    auto d_flipped = _update_board(coords, p_color);
+    _update_score(d_flipped, p_color);
+}
+
+void Game::_update_score(int d_flipped, Color color) {
+    auto score_p1 = scoreboard.p1();
+    auto score_p2 = scoreboard.p2();
+    switch(color) {
+        case Color::LIGHT:
+            scoreboard.update_p1(score_p1 + d_flipped + 1);
+            scoreboard.update_p2(score_p2 - d_flipped);
+        case Color::DARK:
+            scoreboard.update_p2(score_p2 + d_flipped + 1);
+            scoreboard.update_p1(score_p1 - d_flipped);
+        case Color::NONE:
+            throw invalid_argument("Invalid color");
+    }
+}
 
 void Game::print() {
     vector<string> x_label = {"a", "b", "c", "d", "e", "f", "g", "h"};
@@ -42,7 +94,7 @@ void Game::_print_board(vector<string> x_label, vector<string> y_label) {
     bool first_line = true;
     auto dim = board.get_dim();
 
-    for (short i = 0; i < dim; i++) {
+    for (size_t i = 0; i < dim; i++) {
         cout << "  " << x_label.at(i) << " ";
     }
     
@@ -63,16 +115,3 @@ void Game::_print_board(vector<string> x_label, vector<string> y_label) {
     cout << "| " << y_label.at(row) << endl;
     _print_hline(dim);
 }
-
-void Game::register_player(Player* player, Color color) {
-    if (color == Color::LIGHT) {
-        player_l = player;
-    }
-    else if (color == Color::DARK) {
-        player_d = player;        
-    }
-    else {
-        throw invalid_argument("Invalid color");
-    }
-}
-
