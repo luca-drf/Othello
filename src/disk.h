@@ -14,6 +14,7 @@ class Disk {
         void set_color(Color color);
         void flip();
 
+
     protected:
         Color _color;        
 };

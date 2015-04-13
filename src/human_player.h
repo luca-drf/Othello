@@ -20,13 +20,13 @@ class HumanPlayer: public Player {
         virtual Color get_color();
         virtual void set_color(Color color);
 
-        coord _compute_coords(string input);
-        void _print_help();
-
     protected:
         string _name;
         Game* _game;
         Color _color;
+
+        coord _compute_coords(string x_label, string y_label);
+        void _print_help();
 
 };
 

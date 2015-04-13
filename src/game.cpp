@@ -21,6 +21,8 @@ void Game::set_up() {
 }
 
 void Game::_board_set_up() {
+    x_labels = {"a", "b", "c", "d", "e", "f", "g", "h"};
+    y_labels = {"1", "2", "3", "4", "5", "6", "7", "8"};
     board.set_dim(8);
     board.place_element(Disk(Color::LIGHT), coord(3, 3));
     board.place_element(Disk(Color::LIGHT), coord(4, 4));
@@ -76,10 +78,7 @@ void Game::_update_score(int d_flipped, Color color) {
 }
 
 void Game::print() {
-    vector<string> x_label = {"a", "b", "c", "d", "e", "f", "g", "h"};
-    vector<string> y_label = {"1", "2", "3", "4", "5", "6", "7", "8"};
-
-    _print_board(x_label, y_label);
+    _print_board();
 }
 
 void Game::_print_hline(size_t dim) {
@@ -89,7 +88,7 @@ void Game::_print_hline(size_t dim) {
     cout << endl;
 }
 
-void Game::_print_board(vector<string> x_label, vector<string> y_label) {
+void Game::_print_board() {
     short col = 0, row = 0;
     bool first_line = true;
     auto dim = board.get_dim();
